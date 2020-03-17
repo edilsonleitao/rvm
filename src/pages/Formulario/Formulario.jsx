@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TextField } from "@material-ui/core";
 import { get } from "../../databases/formularios";
 import Header from "../../components/Header";
 import FormikDebugger from "../../components/FormikDebugger";
+
+import { BASE_URL, FORM_NAVEG } from "../../constants";
 
 import {
   Container,
@@ -17,36 +19,39 @@ import {
 const Formulario = () => {
   const { id } = useParams();
 
+  const history = useHistory();
+
   const [tituloHeader, setTituloHeader] = useState();
+  const [acaoNavegacaoForm, setAcaoNavegacaoForm] = useState();
   const [initialValues, setInitialValues] = useState({});
   const [agrupamentos, setAgrupamentos] = useState([]);
   const [agrupamentoAtual, setAgrupamentoAtual] = useState({});
-  const [primeitoAgrupamento, setPrimeitoAgrupamento] = useState(false);
+  const [indexAgrupamentoAtual, setIndexAgrupamentoAtual] = useState(0);
+  const [primeiroAgrupamento, setPrimeiroAgrupamento] = useState(false);
   const [ultimoAgrupamento, setUltimoAgrupamento] = useState(false);
 
   const buscaAgrupamentosDoForm = async id => {
     try {
       const { agrupamentos, beneficiario } = await get(id);
       setAgrupamentos(agrupamentos || []);
-      defineAgrupamentoCorrente(1, agrupamentos);
+      defineAgrupamentoCorrente(agrupamentos);
       setTituloHeader(beneficiario);
     } catch (e) {
       console.error(e.stack);
     }
   };
 
-  const defineAgrupamentoCorrente = (idAgrup, agrupamentos) => {
-    let [agrupamento] = agrupamentos.filter(({ id }) => id == idAgrup);
+  const defineAgrupamentoCorrente = (agrupamentos, index = 0) => {
+    let agrupamento = agrupamentos[index];
+
     if (!agrupamento)
       throw new Error(
-        `Ocorreu um erro ao buscar o agrupamento de perguntas de ID: ${idAgrup}!`
+        `Ocorreu um erro ao buscar o agrupamento de perguntas. Índice: ${index}!`
       );
 
-    // substituir por identificadores do primeiro
-    // e ultimo agrupamento conforme backend
-    setPrimeitoAgrupamento(idAgrup == 1 ? true : false);
-    setUltimoAgrupamento(idAgrup == 100 ? true : false);
-
+    setIndexAgrupamentoAtual(index);
+    setPrimeiroAgrupamento(index === 0 ? true : false);
+    setUltimoAgrupamento(index === agrupamentos.length - 1 ? true : false);
     setAgrupamentoAtual(agrupamento);
   };
 
@@ -68,8 +73,10 @@ const Formulario = () => {
     let initialValues = {};
     agrupamentoAtual.perguntas.map(({ nome, valor }) => {
       initialValues[nome] = valor;
+      return null;
     });
     setInitialValues(initialValues);
+    window.scrollTo(0, 0);
   }, [agrupamentoAtual]);
 
   /**
@@ -83,9 +90,30 @@ const Formulario = () => {
     // return errors;
   };
 
-  const onSubmit = (values, { setSubmitting }) => {
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
     console.log(JSON.stringify(values, null, 2));
+
+    //Gravar alterações no banco
+
+    //Volta para a Lista
+    if (!ultimoAgrupamento || acaoNavegacaoForm === FORM_NAVEG.BACK) {
+      let sentidoNavegacao = acaoNavegacaoForm === FORM_NAVEG.NEXT ? 1 : -1;
+
+      defineAgrupamentoCorrente(
+        agrupamentos,
+        indexAgrupamentoAtual + sentidoNavegacao
+      );
+    }
+
+    resetForm();
     setSubmitting(false);
+
+    if (ultimoAgrupamento && acaoNavegacaoForm === FORM_NAVEG.NEXT) {
+      history.replace({
+        pathname: `${BASE_URL}/formularios`,
+        state: { fetchRemote: true }
+      });
+    }
   };
 
   return (
@@ -135,11 +163,21 @@ const Formulario = () => {
                 <Btn
                   type="submit"
                   variant="contained"
-                  disabled={isSubmitting || primeitoAgrupamento}
+                  disabled={isSubmitting || primeiroAgrupamento}
+                  onClick={() => {
+                    setAcaoNavegacaoForm(FORM_NAVEG.BACK);
+                  }}
                 >
                   Anterior
                 </Btn>
-                <Btn type="submit" variant="contained" disabled={isSubmitting}>
+                <Btn
+                  type="submit"
+                  variant="contained"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setAcaoNavegacaoForm(FORM_NAVEG.NEXT);
+                  }}
+                >
                   {ultimoAgrupamento ? "Enviar" : "Próximo"}
                 </Btn>
               </ButtonContainer>

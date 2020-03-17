@@ -4,3 +4,6 @@ export const BASE_URL = "/rvm";
 //Modos de transações do Dexie
 export const READWRITE = "rw";
 export const READONLY = "r";
+
+//Açóes da navegação dos botões do formulário
+export const FORM_NAVEG = { BACK: "voltar", NEXT: "avancar" };
