@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import { List, ListItem } from "@material-ui/core";
 import CardBeneficiario from "../../components/CardBeneficiario";
 import { useHistory, useLocation } from "react-router-dom";
-import fetchForms from "../../services/formulario";
+import fetchForms from "../../services/formularios";
 
 import { BASE_URL } from "../../constants";
 

@@ -34,55 +34,49 @@ const Login = () => {
     });
 
   return (
-    <>
-      <Container>
-        <LoginBox>
-          <Input
-            color="primary"
-            size="small"
-            id="usuario"
-            margin="dense"
-            label="Usuário"
-            InputLabelProps={{ shrink: true }}
-            onChange={handleChange("usuario")}
-            fullWidth
-          />
-          <Input
-            color="primary"
-            margin="dense"
-            id="senha"
-            size="small"
-            label="Senha"
-            type={values.mostraSenha ? "text" : "password"}
-            onChange={handleChange("senha")}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickmostraSenha}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.mostraSenha ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-          <ButtonContainer>
-            <Btn
-              color="primary"
-              variant="contained"
-              onClick={handleClickEntrar}
-            >
-              Entrar
-            </Btn>
-          </ButtonContainer>
-        </LoginBox>
-      </Container>
-    </>
+    <Container>
+      <LoginBox>
+        <Input
+          color="primary"
+          size="small"
+          id="usuario"
+          margin="dense"
+          label="Usuário"
+          InputLabelProps={{ shrink: true }}
+          onChange={handleChange("usuario")}
+          fullWidth
+        />
+        <Input
+          color="primary"
+          margin="dense"
+          id="senha"
+          size="small"
+          label="Senha"
+          type={values.mostraSenha ? "text" : "password"}
+          onChange={handleChange("senha")}
+          InputLabelProps={{ shrink: true }}
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickmostraSenha}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.mostraSenha ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        />
+        <ButtonContainer>
+          <Btn color="primary" variant="contained" onClick={handleClickEntrar}>
+            Entrar
+          </Btn>
+        </ButtonContainer>
+      </LoginBox>
+    </Container>
   );
 };
 
