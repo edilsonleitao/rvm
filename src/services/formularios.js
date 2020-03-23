@@ -6,7 +6,7 @@ import { getAll, del, put } from "../databases/formularios";
  */
 
 const _API = axios.create({
-  baseURL: "https://desenvolve2.dyad.com.br/api/rvm/v1"
+  baseURL: "https://desenvolve.salutis.com.br/api/rvm/v1"
 });
 
 const _syncData = async () => {
