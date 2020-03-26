@@ -1,6 +1,6 @@
 {
   "short_name": "RVM",
-  "name": "Relatório de Visita Médica",
+  "name": "Salutis Tecnologia",
   "icons": [{
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
@@ -19,6 +19,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#033c7c",
-  "background_color": "#033c7c"
+  "theme_color": "#5581b5",
+  "background_color": "#5581b5"
 }

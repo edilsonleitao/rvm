@@ -1,86 +1,90 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import { Formik, Form } from "formik";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 
-import { Main } from "./styles";
+import { Main, Componentes, Logo, Input, Copyrigths, Entrar } from "./styles";
 
-export default function SignIn() {
+export default () => {
+  const initialValues = { usuario: "", senha: "", manterSessao: false };
+
+  const onValidate = values => {
+    const errors = {};
+    if (!values.usuario) {
+      errors.usuario = "Obrigatório";
+    }
+    if (!values.senha) {
+      errors.senha = "Obrigatória";
+    }
+    return errors;
+  };
+
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
+    console.log("onSubmit -> values", values);
+    setSubmitting(false);
+  };
+
   return (
-    <>
-      <CssBaseline />
+    <Main>
+      <Componentes>
+        <Logo />
 
-      <Main>
-        <Container component="main" maxWidth="xs">
-          <Avatar>
-            <LockOutlinedIcon />
-          </Avatar>
+        <Formik
+          initialValues={initialValues}
+          validate={onValidate}
+          onSubmit={onSubmit}
+          enableReinitialize
+        >
+          {({ isSubmitting, getFieldProps, getFieldMeta }) => (
+            <Form style={{ width: "100%" }}>
+              <Input
+                id="usuario"
+                label={
+                  getFieldMeta("usuario").touched &&
+                  getFieldMeta("usuario").error
+                    ? `Usuário (${getFieldMeta("usuario").error})`
+                    : `Usuário`
+                }
+                {...getFieldProps("usuario")}
+                error={
+                  getFieldMeta("usuario").touched &&
+                  !!getFieldMeta("usuario").error
+                }
+                disabled={isSubmitting}
+              />
+              <Input
+                id="senha"
+                label={
+                  getFieldMeta("senha").touched && getFieldMeta("senha").error
+                    ? `Senha (${getFieldMeta("senha").error})`
+                    : `Senha`
+                }
+                type="password"
+                {...getFieldProps("senha")}
+                error={
+                  getFieldMeta("senha").touched && !!getFieldMeta("senha").error
+                }
+                disabled={isSubmitting}
+              />
 
-          <Typography component="h1" variant="h5">
-            Entrar
-          </Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="manterSessao"
+                    color="primary"
+                    {...getFieldProps("manterSessao")}
+                  />
+                }
+                label="Manter-me logado"
+              />
+              <Entrar disabled={isSubmitting}>Entrar</Entrar>
+            </Form>
+          )}
+        </Formik>
 
-          <form>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Senha"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Manter-me logado"
-            />
-            <Button type="submit" fullWidth variant="contained" color="primary">
-              Entrar
-            </Button>
-
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Esqueceu a senha?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Cadastre-se
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-
-          <Box mt={8}>
-            <Typography variant="body2" color="textSecondary" align="center">
-              {`Copyright © Salutis Tecnologia ${new Date().getFullYear()}.`}
-            </Typography>
-          </Box>
-        </Container>
-      </Main>
-    </>
+        <Copyrigths>
+          {`Copyright © Salutis Tecnologia ${new Date().getFullYear()}.`}
+        </Copyrigths>
+      </Componentes>
+    </Main>
   );
-}
+};
