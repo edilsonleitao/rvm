@@ -1,5 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+
 import { BASE_URL } from "./constants";
 
 import Login from "./pages/Login";
@@ -15,12 +17,12 @@ const Routes = () => {
       <Route path={`${BASE_URL}/`} exact>
         <Login />
       </Route>
-      <Route path={`${BASE_URL}/formularios`}>
+      <PrivateRoute path={`${BASE_URL}/formularios`}>
         <FormList />
-      </Route>
-      <Route path={`${BASE_URL}/formulario/:id`}>
+      </PrivateRoute>
+      <PrivateRoute path={`${BASE_URL}/formulario/:id`}>
         <Formulario />
-      </Route>
+      </PrivateRoute>
       <Route path="*">
         <h4> TODO: Implementar tela No Match 404 </h4>
       </Route>

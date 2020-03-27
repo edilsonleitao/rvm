@@ -14,7 +14,7 @@ import Menu from "../../components/Menu";
 import { BASE_URL } from "../../constants";
 
 const Header = props => {
-  const { title, elevation = 0, btnMenu, path, enviar } = props;
+  const { title, elevation = 0, btnMenu, path, enviar, token } = props;
 
   const [open, setOpen] = useState(false);
 
@@ -32,14 +32,18 @@ const Header = props => {
     if (!path)
       throw new Error("Não foi informado um path para o botão de retornar.");
 
-    history.replace(BASE_URL + path);
+    history.replace({
+      pathname: BASE_URL + path,
+      state: { token }
+    });
   };
 
+  //TODO: Remove
   const handleEnviar = () => {
-    history.replace({
-      pathname: `${BASE_URL}/formularios`,
-      state: { fetchRemote: true }
-    });
+    // history.replace({
+    //   pathname: `${BASE_URL}/formularios`,
+    //   state: { fetchRemote: true }
+    // });
   };
 
   return (

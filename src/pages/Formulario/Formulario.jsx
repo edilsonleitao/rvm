@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TextField } from "@material-ui/core";
 import { get } from "../../databases/formularios";
@@ -17,9 +17,13 @@ import {
 } from "./styles";
 
 const Formulario = () => {
-  const { id } = useParams();
-
   const history = useHistory();
+  const { state } = useLocation();
+
+  const token = state && state.token;
+  console.log("Formulario -> token", token);
+
+  const { id } = useParams();
 
   const [tituloHeader, setTituloHeader] = useState();
   const [acaoNavegacaoForm, setAcaoNavegacaoForm] = useState();
@@ -72,7 +76,7 @@ const Formulario = () => {
 
     let initialValues = {};
     agrupamentoAtual.perguntas.map(({ nome, valor }) => {
-      initialValues[nome] = valor;
+      initialValues[nome] = valor || "";
       return null;
     });
     setInitialValues(initialValues);
@@ -111,14 +115,14 @@ const Formulario = () => {
     if (ultimoAgrupamento && acaoNavegacaoForm === FORM_NAVEG.NEXT) {
       history.replace({
         pathname: `${BASE_URL}/formularios`,
-        state: { fetchRemote: true }
+        state: { fetchRemote: true, token }
       });
     }
   };
 
   return (
     <Container>
-      <Header raised path="/formularios" title={tituloHeader} />
+      <Header raised path="/formularios" title={tituloHeader} token={token} />
       <main>
         <Formik
           initialValues={initialValues}

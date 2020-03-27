@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 import { Main, Componentes, Logo, Input, Copyrigths, Entrar } from "./styles";
 
+import { BASE_URL } from "../../constants";
+
 export default () => {
+  const history = useHistory();
+
+  const [token, setToken] = useState();
+
+  useEffect(() => setToken("A1B2C3"), []);
+
   const initialValues = { usuario: "", senha: "", manterSessao: false };
 
   const onValidate = values => {
@@ -20,7 +29,12 @@ export default () => {
 
   const onSubmit = (values, { setSubmitting, resetForm }) => {
     console.log("onSubmit -> values", values);
+
     setSubmitting(false);
+    history.replace({
+      pathname: `${BASE_URL}/formularios`,
+      state: { fetchRemote: true, token }
+    });
   };
 
   return (

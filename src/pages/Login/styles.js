@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 import logo from "../../assets/logologin.png";
 
-export const Main = styled(Container)`
+export const Main = styled.div`
   margin: 0;
   padding: 0;
   border: 0;
@@ -36,8 +36,9 @@ export const Logo = styled.img.attrs({ src: logo })`
 
 export const Input = styled(TextField).attrs({
   variant: "outlined",
-  margin: "normal",
-  fullWidth: true
+  margin: "dense",
+  fullWidth: true,
+  inputProps: { style: { backgroundColor: "#d1d1d1", borderRadius: 5 } }
 })``;
 
 export const Entrar = styled(Button).attrs({

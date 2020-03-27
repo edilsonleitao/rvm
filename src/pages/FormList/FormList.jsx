@@ -12,7 +12,9 @@ import { BASE_URL } from "../../constants";
 const FormList = () => {
   const history = useHistory();
   const { state } = useLocation();
+
   const fetchRemote = state && state.fetchRemote;
+  const token = state && state.token;
 
   const [formularios, setFormularios] = useState([]);
 
@@ -27,7 +29,10 @@ const FormList = () => {
 
   const handleClickCard = item => {
     const { id } = item;
-    history.replace(`${BASE_URL}/formulario/${id}`);
+    history.replace({
+      pathname: `${BASE_URL}/formulario/${id}`,
+      state: { token }
+    });
   };
 
   const handlePull = () => {
