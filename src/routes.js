@@ -11,12 +11,12 @@ import FormList from "./pages/FormList";
 const Routes = () => {
   return (
     <Switch>
-      <Route path={"/"} exact>
+      <PrivateRoute path={"/"} exact>
         <Login />
-      </Route>
-      <Route path={`${BASE_URL}/`} exact>
+      </PrivateRoute>
+      <PrivateRoute path={`${BASE_URL}/`} exact>
         <Login />
-      </Route>
+      </PrivateRoute>
       <PrivateRoute path={`${BASE_URL}/formularios`}>
         <FormList />
       </PrivateRoute>

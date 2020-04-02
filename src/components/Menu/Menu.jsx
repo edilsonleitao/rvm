@@ -6,12 +6,17 @@ import { useHistory } from "react-router-dom";
 
 import { BASE_URL } from "../../constants";
 
+import { logoff } from "../../services/auth";
+
 const Menu = props => {
   const { open, handleDrawerClose } = props;
 
   const history = useHistory();
 
-  const handleClickSair = () => history.replace(`${BASE_URL}/`);
+  const handleClickSair = async () => {
+    await logoff();
+    history.replace(`${BASE_URL}/`);
+  };
 
   return (
     <Drawer variant="persistent" anchor="left" open={open}>

@@ -7,12 +7,10 @@ import { Main, Componentes, Logo, Input, Copyrigths, Entrar } from "./styles";
 
 import { BASE_URL } from "../../constants";
 
+import { login } from "../../services/auth";
+
 export default () => {
   const history = useHistory();
-
-  const [token, setToken] = useState();
-
-  useEffect(() => setToken("A1B2C3"), []);
 
   const initialValues = { usuario: "", senha: "", manterSessao: false };
 
@@ -27,14 +25,20 @@ export default () => {
     return errors;
   };
 
-  const onSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("onSubmit -> values", values);
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
+    const { usuario, senha, manterSessao } = values;
+
+    const { token, error } = await login({ usuario, senha, manterSessao });
+
+    if (error) alert(`Código: ${error.status} - Mensagem: ${error.error}`);
 
     setSubmitting(false);
-    history.replace({
-      pathname: `${BASE_URL}/formularios`,
-      state: { fetchRemote: true, token }
-    });
+    if (token) {
+      history.replace({
+        pathname: `${BASE_URL}/formularios`,
+        state: { fetchRemote: true, token }
+      });
+    }
   };
 
   return (
