@@ -37,6 +37,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   margin-top: 16px;
   width: 100%;
+  margin-bottom: 16px;
 `;
 
 const Btn = styled(Button)`

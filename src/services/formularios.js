@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAll, del, put } from "../databases/formularios";
+import { get, getAll, del, put } from "../databases/formularios";
 
 /**
  * Implementação de todos os serviços para operações no banco remoto
@@ -57,6 +57,10 @@ const _returnFormByIDFromArr = (id, arr) => {
 const fetchForms = async remote => {
   if (remote) await _syncData();
   return await getAll();
+};
+
+export const buscaFormulario = async id => {
+  return await get(id);
 };
 
 export default fetchForms;

@@ -89,6 +89,7 @@ export default () => {
                   <Checkbox
                     id="manterSessao"
                     color="primary"
+                    disabled={isSubmitting}
                     {...getFieldProps("manterSessao")}
                   />
                 }

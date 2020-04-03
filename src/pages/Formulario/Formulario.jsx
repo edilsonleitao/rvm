@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TextField } from "@material-ui/core";
-import { get } from "../../databases/formularios";
 import Header from "../../components/Header";
 import FormikDebugger from "../../components/FormikDebugger";
+import { buscaFormulario } from "../../services/formularios";
+import "react-step-progress-bar/styles.css";
+import { ProgressBar, Step } from "react-step-progress-bar";
 
 import { BASE_URL, FORM_NAVEG } from "../../constants";
 
@@ -21,7 +23,6 @@ const Formulario = () => {
   const { state } = useLocation();
 
   const token = state && state.token;
-  console.log("Formulario -> token", token);
 
   const { id } = useParams();
 
@@ -36,7 +37,7 @@ const Formulario = () => {
 
   const buscaAgrupamentosDoForm = async id => {
     try {
-      const { agrupamentos, beneficiario } = await get(id);
+      const { agrupamentos, beneficiario } = await buscaFormulario(id);
       setAgrupamentos(agrupamentos || []);
       defineAgrupamentoCorrente(agrupamentos);
       setTituloHeader(beneficiario);
@@ -123,6 +124,10 @@ const Formulario = () => {
   return (
     <Container>
       <Header raised path="/formularios" title={tituloHeader} token={token} />
+      <ProgressBar
+        filledBackground="linear-gradient(to right, #fff, #f0bb31)"
+        percent={75}
+      />
       <main>
         <Formik
           initialValues={initialValues}
