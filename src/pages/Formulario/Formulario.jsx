@@ -5,8 +5,7 @@ import { TextField } from "@material-ui/core";
 import Header from "../../components/Header";
 import FormikDebugger from "../../components/FormikDebugger";
 import { buscaFormulario } from "../../services/formularios";
-import "react-step-progress-bar/styles.css";
-import { ProgressBar, Step } from "react-step-progress-bar";
+import ProgressBar from "../../components/ProgressBar";
 
 import { BASE_URL, FORM_NAVEG } from "../../constants";
 
@@ -15,7 +14,7 @@ import {
   StyledCard,
   CardTitle,
   ButtonContainer,
-  Btn
+  Btn,
 } from "./styles";
 
 const Formulario = () => {
@@ -34,8 +33,9 @@ const Formulario = () => {
   const [indexAgrupamentoAtual, setIndexAgrupamentoAtual] = useState(0);
   const [primeiroAgrupamento, setPrimeiroAgrupamento] = useState(false);
   const [ultimoAgrupamento, setUltimoAgrupamento] = useState(false);
+  const [percentual, setPercentual] = useState(0);
 
-  const buscaAgrupamentosDoForm = async id => {
+  const buscaAgrupamentosDoForm = async (id) => {
     try {
       const { agrupamentos, beneficiario } = await buscaFormulario(id);
       setAgrupamentos(agrupamentos || []);
@@ -58,6 +58,7 @@ const Formulario = () => {
     setPrimeiroAgrupamento(index === 0 ? true : false);
     setUltimoAgrupamento(index === agrupamentos.length - 1 ? true : false);
     setAgrupamentoAtual(agrupamento);
+    setPercentual((100 / agrupamentos.length) * index);
   };
 
   /**
@@ -87,7 +88,7 @@ const Formulario = () => {
   /**
    * Será validado no requisito 4191508
    */
-  const onValidate = values => {
+  const onValidate = (values) => {
     // const errors = {};
     // if (!values.nome) {
     //   errors.nome = "Required";
@@ -116,7 +117,7 @@ const Formulario = () => {
     if (ultimoAgrupamento && acaoNavegacaoForm === FORM_NAVEG.NEXT) {
       history.replace({
         pathname: `${BASE_URL}/formularios`,
-        state: { fetchRemote: true, token }
+        state: { fetchRemote: true, token },
       });
     }
   };
@@ -124,11 +125,8 @@ const Formulario = () => {
   return (
     <Container>
       <Header raised path="/formularios" title={tituloHeader} token={token} />
-      <ProgressBar
-        filledBackground="linear-gradient(to right, #fff, #f0bb31)"
-        percent={75}
-      />
       <main>
+        <ProgressBar percent={percentual} />
         <Formik
           initialValues={initialValues}
           validate={onValidate}
@@ -156,7 +154,7 @@ const Formulario = () => {
                         value={valor || getFieldProps(nome).valor}
                         InputLabelProps={{
                           shrink: true,
-                          variant: "outlined"
+                          variant: "outlined",
                         }}
                         fullWidth
                         {...getFieldProps(nome)}
