@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
@@ -14,7 +14,7 @@ export default () => {
 
   const initialValues = { usuario: "", senha: "", manterSessao: false };
 
-  const onValidate = values => {
+  const onValidate = (values) => {
     const errors = {};
     if (!values.usuario) {
       errors.usuario = "Obrigatório";
@@ -36,7 +36,7 @@ export default () => {
     if (token) {
       history.replace({
         pathname: `${BASE_URL}/formularios`,
-        state: { fetchRemote: true, token }
+        state: { fetchRemote: true, token },
       });
     }
   };

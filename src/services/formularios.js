@@ -6,7 +6,7 @@ import { get, getAll, del, put } from "../databases/formularios";
  */
 
 const _API = axios.create({
-  baseURL: "https://desenvolve.salutis.com.br/api/rvm/v1"
+  baseURL: "https://desenvolve.salutis.com.br/api/rvm/v1",
 });
 
 const _syncData = async () => {
@@ -20,7 +20,7 @@ const _syncData = async () => {
     await _syncDeletedFormFromRemote(localForms, remoteForms);
 
     await Promise.all(
-      remoteForms.map(async form => {
+      remoteForms.map(async (form) => {
         try {
           let item = _returnFormByIDFromArr(form.id, localForms);
 
@@ -43,7 +43,7 @@ const _syncData = async () => {
 
 const _syncDeletedFormFromRemote = async (localForms, remoteForms) => {
   await Promise.all(
-    localForms.map(async form => {
+    localForms.map(async (form) => {
       let remoteForm = _returnFormByIDFromArr(form.id, remoteForms);
       if (!remoteForm) await del(form.id);
     })
@@ -51,16 +51,25 @@ const _syncDeletedFormFromRemote = async (localForms, remoteForms) => {
 };
 
 const _returnFormByIDFromArr = (id, arr) => {
-  return arr.find(item => item.id === id);
+  return arr.find((item) => item.id === id);
 };
 
-const fetchForms = async remote => {
+const fetchForms = async (remote) => {
   if (remote) await _syncData();
   return await getAll();
 };
 
-export const buscaFormulario = async id => {
+export const buscaFormulario = async (id) => {
   return await get(id);
+};
+
+export const buscaFormularioPorPrestador = async (prestador) => {
+  const forms = await getAll();
+  if (!forms) return [];
+
+  return forms.filter(({ hospital }) =>
+    hospital.toUpperCase().match(prestador.toUpperCase())
+  );
 };
 
 export default fetchForms;

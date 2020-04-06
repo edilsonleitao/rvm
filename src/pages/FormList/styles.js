@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+export const Container = styled.div`
   margin: 0;
   padding: 0;
   border: 0;
@@ -16,4 +16,10 @@ const Container = styled.div`
   }
 `;
 
-export { Container };
+export const SearchContainer = styled.div`
+  display: flex;
+  background-color: #fff;
+  margin: 0 16px 0 16px;
+  padding: 0 16px 0 16px;
+  border-radius: 4px;
+`;
