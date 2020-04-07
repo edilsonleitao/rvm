@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import getLocalToken from "../../services/auth";
+import { Redirect } from "react-router-dom";
 
 import { Main, Componentes, Logo, Input, Copyrigths, Entrar } from "./styles";
 
@@ -13,6 +15,20 @@ export default () => {
   const history = useHistory();
 
   const initialValues = { usuario: "", senha: "", manterSessao: false };
+
+  const [localToken, setLocalToken] = useState("");
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const checkAuth = async () => {
+    let token = await getLocalToken();
+    console.log("checkAuth -> token", token);
+    setLocalToken(token);
+    setAuthChecked(true);
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const onValidate = (values) => {
     const errors = {};
@@ -41,7 +57,14 @@ export default () => {
     }
   };
 
-  return (
+  return !authChecked ? null : localToken ? (
+    <Redirect
+      to={{
+        pathname: `${BASE_URL}/formularios`,
+        state: { fetchRemote: true, token: localToken },
+      }}
+    />
+  ) : (
     <Main>
       <Componentes>
         <Logo />

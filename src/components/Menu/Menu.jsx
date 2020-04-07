@@ -8,7 +8,7 @@ import { BASE_URL } from "../../constants";
 
 import { logoff } from "../../services/auth";
 
-const Menu = props => {
+const Menu = (props) => {
   const { open, handleDrawerClose } = props;
 
   const history = useHistory();

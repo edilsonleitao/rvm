@@ -7,7 +7,7 @@ import { READONLY, READWRITE } from "../constants";
 
 const TOKEN = Database.token;
 
-export const add = async data => {
+export const add = async (data) => {
   try {
     return await Database.transaction(READWRITE, TOKEN, async () => {
       return await TOKEN.add(data);
@@ -17,10 +17,10 @@ export const add = async data => {
   }
 };
 
-export const count = async () => {
+export const get = async () => {
   try {
     return await Database.transaction(READONLY, TOKEN, async () => {
-      return await TOKEN.count();
+      return await TOKEN.toCollection().first();
     });
   } catch (e) {
     console.error(e.stack);
