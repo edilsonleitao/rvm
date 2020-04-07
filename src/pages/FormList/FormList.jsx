@@ -8,7 +8,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import fetchForms, {
   buscaFormularioPorPrestador,
 } from "../../services/formularios";
-import { Search as SearchIcon } from "@material-ui/icons";
+import { Search as SearchIcon, Clear as ClearIcon } from "@material-ui/icons";
 
 import { BASE_URL } from "../../constants";
 
@@ -20,7 +20,7 @@ const FormList = () => {
   const token = state && state.token;
 
   const [formularios, setFormularios] = useState([]);
-  const [searchTxt, setSearchTxt] = useState();
+  const [searchTxt, setSearchTxt] = useState("");
 
   async function fetchFormulario(remote) {
     const data = await fetchForms(remote);
@@ -48,13 +48,19 @@ const FormList = () => {
     setSearchTxt(fld.value);
   };
 
-  const handleSearch = async () => {
-    if (!searchTxt) {
+  const handleSearch = async (clear) => {
+    if (!searchTxt || clear) {
+      setSearchTxt("");
       await fetchFormulario();
       return;
     }
+
     const data = await buscaFormularioPorPrestador(searchTxt);
     setFormularios(data);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -63,16 +69,29 @@ const FormList = () => {
         <Header elevation={0} btnMenu title="Relatório de Visita Médica" />
       </header>
       <main>
-        <SearchContainer>
+        <SearchContainer onSubmit={handleSubmit}>
+          <IconButton
+            type="submit"
+            aria-label="search"
+            onClick={async () => handleSearch(false)}
+          >
+            <SearchIcon />
+          </IconButton>
           <InputBase
             placeholder="Prestador"
             fullWidth
             onChange={handleChangheSearch}
             value={searchTxt}
           />
-          <IconButton type="submit" aria-label="search" onClick={handleSearch}>
-            <SearchIcon />
-          </IconButton>
+          {searchTxt && (
+            <IconButton
+              type="reset"
+              aria-label="clear"
+              onClick={async () => handleSearch(true)}
+            >
+              <ClearIcon />
+            </IconButton>
+          )}
         </SearchContainer>
         <Pullable onRefresh={handlePull}>
           <List>

@@ -16,10 +16,9 @@ export const Container = styled.div`
   }
 `;
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.form`
   display: flex;
   background-color: #fff;
   margin: 0 16px 0 16px;
-  padding: 0 16px 0 16px;
   border-radius: 4px;
 `;
