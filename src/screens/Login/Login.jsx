@@ -21,7 +21,6 @@ export default () => {
 
   const checkAuth = async () => {
     let token = await getLocalToken();
-    console.log("checkAuth -> token", token);
     setLocalToken(token);
     setAuthChecked(true);
   };

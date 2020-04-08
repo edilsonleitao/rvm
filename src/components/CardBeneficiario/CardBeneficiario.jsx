@@ -1,5 +1,5 @@
 import React from "react";
-import { CardContent, Typography } from "@material-ui/core";
+import { CardContent, CardActions, Typography } from "@material-ui/core";
 
 import { CardContainer } from "./styles";
 
@@ -22,6 +22,9 @@ const CardBeneficiario = ({ questionario }) => {
           {hospital}
         </Typography>
       </CardContent>
+      <CardActions>
+        <p>Pendente</p>
+      </CardActions>
     </CardContainer>
   );
 };

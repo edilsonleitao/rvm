@@ -4,9 +4,9 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import { BASE_URL } from "./constants";
 
-import Login from "./pages/Login";
-import Formulario from "./pages/Formulario";
-import FormList from "./pages/FormList";
+import Login from "./screens/Login";
+import Formulario from "./screens/Formulario";
+import FormList from "./screens/FormList";
 
 const Routes = () => {
   return (
