@@ -1,5 +1,6 @@
 import axios from "axios";
 import { get, getAll, del, put } from "../databases/formularios";
+import { STATUS_FORM } from "../constants";
 
 /**
  * Implementação de todos os serviços para operações no banco remoto
@@ -24,8 +25,8 @@ const _syncData = async () => {
         try {
           let item = _returnFormByIDFromArr(form.id, localForms);
 
-          if (!item || item.status === "Pendente") {
-            await put(form);
+          if (!item || item.status === STATUS_FORM.FILL.PENDENTE.nome) {
+            await put({ ...form, status: STATUS_FORM.FILL.PENDENTE.nome });
           }
 
           console.log(`Formulário atualizado com sucesso! ID: ${form.id}`);

@@ -18,7 +18,7 @@ export const Main = styled.div`
 
 export const Componentes = styled(Container).attrs({
   component: "main",
-  maxWidth: "xs"
+  maxWidth: "xs",
 })`
   display: flex;
   flex-direction: column;
@@ -38,20 +38,20 @@ export const Input = styled(TextField).attrs({
   variant: "outlined",
   margin: "dense",
   fullWidth: true,
-  inputProps: { style: { backgroundColor: "#d1d1d1", borderRadius: 5 } }
+  inputProps: { style: { backgroundColor: "#d1d1d1", borderRadius: 5 } },
 })``;
 
 export const Entrar = styled(Button).attrs({
   type: "submit",
   fullWidth: true,
   variant: "contained",
-  color: "primary"
+  color: "primary",
 })``;
 
 export const Copyrigths = styled(Typography).attrs({
   variant: "body2",
   color: "textSecondary",
-  align: "center"
+  align: "center",
 })`
   padding-top: 40px;
 `;
